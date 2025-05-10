@@ -2,7 +2,7 @@ diff --git a/arm/arm_init.c b/arm/arm_init.c
 index ab22525b3..3a89998ab 100644
 --- a/arm/arm_init.c
 +++ b/arm/arm_init.c
-@@ -31,23 +31,21 @@
+@@ -31,26 +31,21 @@
   * has partial support is contrib/arm-neon/linux.c - a generic Linux
   * implementation which reads /proc/cpufino.
   */
@@ -11,16 +11,19 @@ index ab22525b3..3a89998ab 100644
  #ifndef PNG_ARM_NEON_FILE
 -#  if defined(__aarch64__) || defined(_M_ARM64)
 -     /* ARM Neon is expected to be unconditionally available on ARM64. */
--#    error "PNG_ARM_NEON_CHECK_SUPPORTED must not be defined on this platform"
+-#    error "PNG_ARM_NEON_CHECK_SUPPORTED must not be defined on ARM64"
+-#  elif defined(__ARM_NEON__) || defined(__ARM_NEON)
+-     /* ARM Neon is expected to be available on the target CPU architecture. */
+-#    error "PNG_ARM_NEON_CHECK_SUPPORTED must not be defined on this CPU arch"
 -#  elif defined(__linux__)
 -#    define PNG_ARM_NEON_FILE "contrib/arm-neon/linux.c"
 -#  else
 -#    error "No support for run-time ARM Neon checking; use compile-time options"
-+#  ifdef __linux__
-+#     define PNG_ARM_NEON_FILE "contrib/arm-neon/linux.c"
++#ifdef __linux__
++#define PNG_ARM_NEON_FILE "contrib/arm-neon/linux.c"
  #  endif
  #endif
- 
+
 -static int png_have_neon(png_structp png_ptr);
  #ifdef PNG_ARM_NEON_FILE
 -#  include PNG_ARM_NEON_FILE
@@ -34,7 +37,7 @@ index ab22525b3..3a89998ab 100644
 +#  error "PNG_ARM_NEON_FILE undefined: no support for run-time ARM NEON checks"
 +#endif /* PNG_ARM_NEON_FILE */
  #endif /* PNG_ARM_NEON_CHECK_SUPPORTED */
- 
+
  #ifndef PNG_ALIGNED_MEMORY_SUPPORTED
 diff --git a/arm/palette_neon_intrinsics.c b/arm/palette_neon_intrinsics.c
 index 92c7d6f9f..49909d475 100644
@@ -157,13 +160,12 @@ diff --git a/pngset.c b/pngset.c
 index 8c372cf41..6444c0615 100644
 --- a/pngset.c
 +++ b/pngset.c
-@@ -1019,9 +1019,6 @@ png_set_tRNS(png_structrp png_ptr, png_inforp info_ptr,
-           info_ptr->trans_alpha = png_voidcast(png_bytep,
+@@ -1008,8 +1008,6 @@ png_set_tRNS(png_structrp png_ptr, png_i
                png_malloc(png_ptr, PNG_MAX_PALETTE_LENGTH));
            memcpy(info_ptr->trans_alpha, trans_alpha, (size_t)num_trans);
--
--          info_ptr->valid |= PNG_INFO_tRNS;
+
 -          info_ptr->free_me |= PNG_FREE_TRNS;
+-          info_ptr->valid |= PNG_INFO_tRNS;
         }
         png_ptr->trans_alpha = info_ptr->trans_alpha;
     }

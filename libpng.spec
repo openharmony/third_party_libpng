@@ -1,6 +1,6 @@
 Name:           libpng
 Epoch:          2
-Version:        1.6.38
+Version:        1.6.44
 Release:        2
 Summary:        A library of functions for manipulating PNG image format files
 License:        zlib
@@ -30,16 +30,16 @@ applications that using the PNG library.
 %package static
 Summary:       Static PNG image format file library
 Requires:      %{name}-devel%{?_isa} = %{epoch}:%{version}-%{release}
- 
+
 %description static
 The libpng-static package contains the statically linkable version of libpng.
 Linking to static libraries is discouraged for most applications, but it is
 necessary for some boot packages.
- 
+
 %package tools
 Summary:       Tools for PNG image format file library
 Requires:      %{name}%{?_isa} = %{epoch}:%{version}-%{release}
- 
+
 %description tools
 The libpng-tools package contains tools used by the authors of libpng.
 
@@ -80,7 +80,7 @@ make check
 
 %files static
 %{_libdir}/libpng*.a
- 
+
 %files tools
 %{_bindir}/*
 
@@ -89,6 +89,9 @@ make check
 %{_mandir}/man*/*
 
 %changelog
+* Thu May 10 2025 zhouwenpei <zhouwenpei1@h-partners.com> - 1.6.44-1
+- update 1.6.44
+
 * Thu Dec 15 2022 zhouwenpei <zhouwenpei1@h-partners.com> - 1.6.38-2
 - remove example.c from help
 
