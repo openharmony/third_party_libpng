@@ -26,6 +26,17 @@ action("libpng_action") {
   ]
 
   inputs = [ "//third_party/libpng/libpng-1.6.44.tar.gz" ]
+
+  inputs += [
+    "backport-libpng-1.6.37-enable-valid.patch",
+    "CVE-2018-14048.patch",
+    "CVE-2019-6129.patch",
+    "huawei_libpng_CMakeList.patch",
+    "libpng-fix-arm-neon.patch",
+    "libpng-multilib.patch",
+    "libpng_optimize.patch",
+  ]
+
   libpng_path = rebase_path("${target_gen_dir}", root_build_dir)
   libpng_source_path = rebase_path("//third_party/libpng", root_build_dir)
   args = [
