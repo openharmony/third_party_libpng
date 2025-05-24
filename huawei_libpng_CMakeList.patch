@@ -1,4 +1,9 @@
-@@ -1,1162 +1,28 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 8652564b6..639554ad8 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -1,1162 +1,26 @@
++cmake_minimum_required(VERSION 3.16.5)
 
 -# CMakeLists.txt - CMake lists for libpng
 -#
@@ -15,12 +20,11 @@
 -# the accompanying file scripts/cmake/AUTHORS.md
 -#
 -# SPDX-License-Identifier: libpng-2.0
-+cmake_minimum_required(VERSION 3.16.5)
-
--cmake_minimum_required(VERSION 3.6)
 +set(LibpngInc "${PROJECT_SOURCE_DIR}/third_party/libpng")
 +set(LibpngSrc "${PROJECT_SOURCE_DIR}/third_party/libpng")
 
+-cmake_minimum_required(VERSION 3.6)
+-
 -set(PNGLIB_MAJOR 1)
 -set(PNGLIB_MINOR 6)
 -set(PNGLIB_REVISION 44)
@@ -1184,5 +1188,4 @@
 +    ${LibpngSrc}/pngwutil.c
 +    )
 +target_link_libraries(libpng PUBLIC zlib)
-+target_include_directories(libpng PUBLIC ${LibpngInc})
 +target_include_directories(libpng PUBLIC ${LibpngInc})
