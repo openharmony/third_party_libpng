@@ -89,7 +89,7 @@ make check
 %{_mandir}/man*/*
 
 %changelog
-* Thu May 10 2025 zhouwenpei <zhouwenpei1@h-partners.com> - 1.6.44-1
+* Thu May 10 2025 zhouwenpei <guomengyu5@h-partners.com> - 1.6.44-1
 - update 1.6.44
 
 * Thu Dec 15 2022 zhouwenpei <zhouwenpei1@h-partners.com> - 1.6.38-2
