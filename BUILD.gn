@@ -5,27 +5,28 @@ import("//build/ohos.gni")
 action("libpng_action") {
   script = "//third_party/libpng/install.py"
   outputs = [
-    "${target_gen_dir}/libpng-1.6.38/png.c",
-    "${target_gen_dir}/libpng-1.6.38/pngerror.c",
-    "${target_gen_dir}/libpng-1.6.38/pngget.c",
-    "${target_gen_dir}/libpng-1.6.38/pngmem.c",
-    "${target_gen_dir}/libpng-1.6.38/pngpread.c",
-    "${target_gen_dir}/libpng-1.6.38/pngread.c",
-    "${target_gen_dir}/libpng-1.6.38/pngrio.c",
-    "${target_gen_dir}/libpng-1.6.38/pngrtran.c",
-    "${target_gen_dir}/libpng-1.6.38/pngrutil.c",
-    "${target_gen_dir}/libpng-1.6.38/pngset.c",
-    "${target_gen_dir}/libpng-1.6.38/pngtrans.c",
-    "${target_gen_dir}/libpng-1.6.38/pngwio.c",
-    "${target_gen_dir}/libpng-1.6.38/pngwrite.c",
-    "${target_gen_dir}/libpng-1.6.38/pngwtran.c",
-    "${target_gen_dir}/libpng-1.6.38/pngwutil.c",
-    "${target_gen_dir}/libpng-1.6.38/arm/arm_init.c",
-    "${target_gen_dir}/libpng-1.6.38/arm/filter_neon_intrinsics.c",
-    "${target_gen_dir}/libpng-1.6.38/arm/palette_neon_intrinsics.c",
+    "${target_gen_dir}/libpng-1.6.44/png.c",
+    "${target_gen_dir}/libpng-1.6.44/pngerror.c",
+    "${target_gen_dir}/libpng-1.6.44/pngget.c",
+    "${target_gen_dir}/libpng-1.6.44/pngmem.c",
+    "${target_gen_dir}/libpng-1.6.44/pngpread.c",
+    "${target_gen_dir}/libpng-1.6.44/pngread.c",
+    "${target_gen_dir}/libpng-1.6.44/pngrio.c",
+    "${target_gen_dir}/libpng-1.6.44/pngrtran.c",
+    "${target_gen_dir}/libpng-1.6.44/pngrutil.c",
+    "${target_gen_dir}/libpng-1.6.44/pngset.c",
+    "${target_gen_dir}/libpng-1.6.44/pngtrans.c",
+    "${target_gen_dir}/libpng-1.6.44/pngwio.c",
+    "${target_gen_dir}/libpng-1.6.44/pngwrite.c",
+    "${target_gen_dir}/libpng-1.6.44/pngwtran.c",
+    "${target_gen_dir}/libpng-1.6.44/pngwutil.c",
+    "${target_gen_dir}/libpng-1.6.44/arm/arm_init.c",
+    "${target_gen_dir}/libpng-1.6.44/arm/filter_neon_intrinsics.c",
+    "${target_gen_dir}/libpng-1.6.44/arm/palette_neon_intrinsics.c",
   ]
 
-  inputs = [ "//third_party/libpng/libpng-1.6.38.tar.gz" ]
+  inputs = [ "//third_party/libpng/libpng-1.6.44.tar.gz" ]
+
   inputs += [
     "backport-libpng-1.6.37-enable-valid.patch",
     "CVE-2018-14048.patch",
@@ -50,7 +51,7 @@ if (defined(ohos_lite)) {
   import("//build/lite/config/component/lite_component.gni")
 
   config("libpng_config") {
-    include_dirs = [ "${target_gen_dir}/libpng-1.6.38/" ]
+    include_dirs = [ "${target_gen_dir}/libpng-1.6.44/" ]
   }
 
   libpng_source = get_target_outputs(":libpng_action")
@@ -78,7 +79,7 @@ if (defined(ohos_lite)) {
   import("//build/ohos.gni")
 
   config("libpng_config") {
-    include_dirs = [ "${target_gen_dir}/libpng-1.6.38/" ]
+    include_dirs = [ "${target_gen_dir}/libpng-1.6.44/" ]
   }
 
   config("libpng_wno_config") {
@@ -103,7 +104,7 @@ if (defined(ohos_lite)) {
 
   ohos_source_set("png_static") {
     sources = get_target_outputs(":libpng_action")
-    include_dirs = [ "${target_gen_dir}/libpng-1.6.38/" ]
+    include_dirs = [ "${target_gen_dir}/libpng-1.6.44/" ]
     external_deps = [ "zlib:libz" ]
     deps = [ ":libpng_action" ]
     public_configs = [ ":libpng_config" ]
@@ -113,7 +114,7 @@ if (defined(ohos_lite)) {
 
   ohos_shared_library("libpng") {
     sources = get_target_outputs(":libpng_action")
-    include_dirs = [ "${target_gen_dir}/libpng-1.6.38/" ]
+    include_dirs = [ "${target_gen_dir}/libpng-1.6.44/" ]
     deps = [ ":libpng_action" ]
     if (is_arkui_x) {
       deps += [ "//third_party/zlib:libz" ]
@@ -140,7 +141,7 @@ if (defined(ohos_lite)) {
   ohos_static_library("libpng_static") {
     sources = get_target_outputs(":libpng_action")
 
-    include_dirs = [ "${target_gen_dir}/libpng-1.6.38/" ]
+    include_dirs = [ "${target_gen_dir}/libpng-1.6.44/" ]
     deps = [ ":libpng_action" ]
     if (is_arkui_x) {
       deps += [ "//third_party/zlib:libz" ]
