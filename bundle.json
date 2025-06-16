@@ -34,7 +34,10 @@
             ]
         },
         "build": {
-            "sub_component": [],
+            "sub_component": [
+                "//third_party/libpng:libpng",
+                "//third_party/libpng:libpng_static"
+            ],
             "inner_kits": [
                 {
                     "type": "so",
