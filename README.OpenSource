@@ -1,6 +1,6 @@
 [
     {
-        "Name": "openEuler:libpng",
+        "Name": "libpng",
         "License": "libpng license",
         "License File": "LICENSE",
         "Version Number": "1.6.44",
