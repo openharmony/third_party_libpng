@@ -190,3 +190,16 @@ index 06c45d16a..b9a0ca188 100644
     png_convert_from_struct_tm(ptime, tbuf);
  }
  #endif
+diff --git a/png.c b/png.c
+index 8ef8bbd..fd74a39 100644
+--- a/png.c
++++ b/png.c
+@@ -82,7 +82,7 @@ png_zalloc,(voidpf png_ptr, uInt items, uInt size),PNG_ALLOCATED)
+    if (png_ptr == NULL)
+       return NULL;
+ 
+-   if (items >= (~(png_alloc_size_t)0)/size)
++   if (size != 0 && items >= (~(png_alloc_size_t)0)/size)
+    {
+       png_warning (png_voidcast(png_structrp, png_ptr),
+           "Potential overflow in png_zalloc()");
