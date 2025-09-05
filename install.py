@@ -32,7 +32,6 @@ def untar_file(tar_file_path, extract_path):
 
 def move_file(src_path, dst_path):
     files = [
-        "CVE-2019-6129.patch",
         "huawei_libpng_CMakeList.patch",
         "libpng-fix-arm-neon.patch",
         "libpng-multilib.patch",
@@ -60,7 +59,6 @@ def apply_patch(patch_file, target_dir):
 
 def do_patch(target_dir):
     patch_file = [
-        "CVE-2019-6129.patch",
         "huawei_libpng_CMakeList.patch",
         "libpng-fix-arm-neon.patch",
         "libpng-multilib.patch",
