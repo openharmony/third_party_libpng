@@ -1613,7 +1613,7 @@ diff --git a/pngpriv.h b/pngpriv.h
 index fb521cf00..6027d9acc 100644
 --- a/pngpriv.h
 +++ b/pngpriv.h
-@@ -189,6 +189,20 @@
+@@ -148,6 +148,20 @@
  #     define PNG_ARM_NEON_IMPLEMENTATION 0
  #endif /* PNG_ARM_NEON_OPT > 0 */
  
@@ -1632,9 +1632,9 @@ index fb521cf00..6027d9acc 100644
 +#endif
 +
  #ifndef PNG_MIPS_MSA_OPT
- #  if defined(__mips_msa) && (__mips_isa_rev >= 5) && defined(PNG_ALIGNED_MEMORY_SUPPORTED)
- #     define PNG_MIPS_MSA_OPT 2
-@@ -351,8 +365,14 @@
+ #  if defined(__mips_msa) && (__mips_isa_rev >= 5) && \
+    defined(PNG_ALIGNED_MEMORY_SUPPORTED)
+@@ -354,8 +368,14 @@
  #endif
  
  #ifndef PNG_INTERNAL_FUNCTION
@@ -1650,7 +1650,7 @@ index fb521cf00..6027d9acc 100644
  #endif
  
  #ifndef PNG_INTERNAL_CALLBACK
-@@ -1304,6 +1324,50 @@ PNG_INTERNAL_FUNCTION(void,png_read_filter_row_paeth3_neon,(png_row_infop
+@@ -1297,6 +1317,50 @@ PNG_INTERNAL_FUNCTION(void,png_read_filter_row_paeth3_neon,(png_row_infop
      row_info, png_bytep row, png_const_bytep prev_row),PNG_EMPTY);
  PNG_INTERNAL_FUNCTION(void,png_read_filter_row_paeth4_neon,(png_row_infop
      row_info, png_bytep row, png_const_bytep prev_row),PNG_EMPTY);
@@ -1700,7 +1700,7 @@ index fb521cf00..6027d9acc 100644
 +#endif
  #endif
  
- #if PNG_MIPS_MSA_OPT > 0
+ #if PNG_MIPS_MSA_IMPLEMENTATION == 1
 diff --git a/pngread.c b/pngread.c
 index 8fa7d9f16..71be1a26c 100644
 --- a/pngread.c
