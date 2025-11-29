@@ -38,7 +38,11 @@ def move_file(src_path, dst_path):
         "backport-libpng-1.6.37-enable-valid.patch",
         "pnglibconf.h",
         "CVE-2018-14048.patch",
-        "libpng_optimize.patch"
+        "libpng_optimize.patch",
+        "CVE-2025-64505.patch",
+        "CVE-2025-64506.patch",
+        "CVE-2025-64720.patch",
+        "CVE-2025-65018.patch"
     ]
     for file in files:
         src_file = os.path.join(src_path, file)
@@ -64,7 +68,11 @@ def do_patch(target_dir):
         "libpng-multilib.patch",
         "backport-libpng-1.6.37-enable-valid.patch",
         "CVE-2018-14048.patch",
-        "libpng_optimize.patch"
+        "libpng_optimize.patch",
+        "CVE-2025-64505.patch",
+        "CVE-2025-64506.patch",
+        "CVE-2025-64720.patch",
+        "CVE-2025-65018.patch"
     ]
 
     for patch in patch_file:
