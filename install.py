@@ -42,7 +42,9 @@ def move_file(src_path, dst_path):
         "CVE-2025-64505.patch",
         "CVE-2025-64506.patch",
         "CVE-2025-64720.patch",
-        "CVE-2025-65018.patch"
+        "CVE-2025-65018.patch",
+        "CVE-2025-66293.patch",
+        "CVE-2025-66293-h1.patch"
     ]
     for file in files:
         src_file = os.path.join(src_path, file)
@@ -72,7 +74,9 @@ def do_patch(target_dir):
         "CVE-2025-64505.patch",
         "CVE-2025-64506.patch",
         "CVE-2025-64720.patch",
-        "CVE-2025-65018.patch"
+        "CVE-2025-65018.patch",
+        "CVE-2025-66293.patch",
+        "CVE-2025-66293-h1.patch"
     ]
 
     for patch in patch_file:
