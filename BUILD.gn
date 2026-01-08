@@ -139,6 +139,16 @@ if (defined(ohos_lite)) {
   }
 
   ohos_static_library("libpng_static") {
+    visibility = [
+      ":*",
+      "//foundation/arkui/ui_ext_lite/tools/ide/*",
+      "//foundation/arkui/ui_lite/ext/ide/*",
+      "//developtools/global_resource_tool/*",
+      "//third_party/freetype/*",
+      "//third_party/skia/m133/*",
+      "//out/*",
+      "//vendor/hisi/confidential/contexthub/src/framework/hisi/ui/third_party/*",
+    ]
     sources = get_target_outputs(":libpng_action")
 
     include_dirs = [ "${target_gen_dir}/libpng-1.6.44/" ]
