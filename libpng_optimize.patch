@@ -25,7 +25,7 @@ index 3a89998ab..05aa2c0d9 100644
 +         png_read_filter_row_paeth3_x2_neon;
 +#endif
     }
- 
+
     else if (bpp == 4)
 @@ -128,6 +138,13 @@ png_init_filter_functions_neon(png_structp pp, unsigned int bpp)
        pp->read_filter[PNG_FILTER_VALUE_AVG-1] = png_read_filter_row_avg4_neon;
@@ -45,15 +45,15 @@ diff --git a/arm/filter_neon_intrinsics.c b/arm/filter_neon_intrinsics.c
 index 4466d48b2..27048a578 100644
 --- a/arm/filter_neon_intrinsics.c
 +++ b/arm/filter_neon_intrinsics.c
-@@ -47,6 +47,7 @@
- 
+@@ -46,6 +46,7 @@
+
  #if PNG_ARM_NEON_OPT > 0
- 
+
 +#ifndef PNG_MULTY_LINE_ENABLE
  void
  png_read_filter_row_up_neon(png_row_infop row_info, png_bytep row,
-    png_const_bytep prev_row)
-@@ -396,7 +397,1351 @@ png_read_filter_row_paeth4_neon(png_row_infop row_info, png_bytep row,
+     png_const_bytep prev_row)
+@@ -395,7 +396,1351 @@ png_read_filter_row_paeth4_neon(png_row_infop row_info, png_bytep row,
        vst4_lane_u32(png_ptr(uint32_t,rp), vdest_val, 0);
     }
  }
@@ -474,7 +474,7 @@ index 4466d48b2..27048a578 100644
 +
 +      vdest.val[IND2] = vhadd_u8(vdest.val[1], vtmp2);
 +      vdest.val[IND2] = vadd_u8(vdest.val[IND2], vtmp3);
-+
+
 +      vtmp2 = vext_u8(vpp.val[1], vpp.val[1], 1);
 +
 +      vdest.val[IND3] = vhadd_u8(vdest.val[IND2], vtmp2);
@@ -688,7 +688,7 @@ index 4466d48b2..27048a578 100644
 +   vdest_val2 = png_ldr(uint32x2_t, &vdest);
 +   vst1_lane_u32(png_ptr(uint32_t, rp), vdest_val2, 0);
 +}
- 
++
 +void png_read_filter_row_avg4_x2_neon(png_row_infop row_info, png_bytep row,
 +   png_const_bytep prev_row)
 +{
@@ -1438,7 +1438,7 @@ index e283627b7..43ec512df 100644
 @@ -623,6 +636,92 @@ png_push_read_IDAT(png_structrp png_ptr)
     }
  }
- 
+
 +#ifdef PNG_MULTY_LINE_ENABLE
 +// OH ISSUE: png optimize
 +static void png_push_process_row_x2(png_structrp png_ptr,
@@ -1531,7 +1531,7 @@ index e283627b7..43ec512df 100644
 @@ -639,6 +738,17 @@ png_process_IDAT_data(png_structrp png_ptr, png_bytep buffer,
     /* TODO: WARNING: TRUNCATION ERROR: DANGER WILL ROBINSON: */
     png_ptr->zstream.avail_in = (uInt)buffer_length;
- 
+
 +#ifdef PNG_MULTY_LINE_ENABLE
 +   // OH ISSUE: png optimize
 +   int row_num = 1;
@@ -1567,9 +1567,9 @@ index e283627b7..43ec512df 100644
 +#endif
           png_ptr->zstream.next_out = png_ptr->row_buf;
        }
- 
+
 @@ -719,7 +840,12 @@ png_process_IDAT_data(png_structrp png_ptr, png_bytep buffer,
- 
+
           /* Do we have a complete row? */
           if (png_ptr->zstream.avail_out == 0)
 +#ifdef PNG_MULTY_LINE_ENABLE
@@ -1579,7 +1579,7 @@ index e283627b7..43ec512df 100644
              png_push_process_row(png_ptr);
 +#endif
        }
- 
+
        /* And check for the end of the stream. */
 @@ -738,6 +864,7 @@ png_process_IDAT_data(png_structrp png_ptr, png_bytep buffer,
  void /* PRIVATE */
@@ -1588,7 +1588,7 @@ index e283627b7..43ec512df 100644
 +   png_debug(1, "in png_push_process_row");
     /* 1.5.6: row_info moved out of png_struct to a local here. */
     png_row_info row_info;
- 
+
 @@ -762,8 +889,17 @@ png_push_process_row(png_structrp png_ptr)
      * it may not be in the future, so this was changed just to copy the
      * interlaced row count:
@@ -1613,10 +1613,10 @@ diff --git a/pngpriv.h b/pngpriv.h
 index fb521cf00..6027d9acc 100644
 --- a/pngpriv.h
 +++ b/pngpriv.h
-@@ -148,6 +148,20 @@
+@@ -170,6 +170,20 @@
  #     define PNG_ARM_NEON_IMPLEMENTATION 0
  #endif /* PNG_ARM_NEON_OPT > 0 */
- 
+
 +#if defined(PNG_ARM_NEON_IMPLEMENTATION) && defined(PNG_ARM_NEON)
 +// OH ISSUE: png optimize
 +#  if PNG_ARM_NEON_IMPLEMENTATION == 1
@@ -1634,9 +1634,9 @@ index fb521cf00..6027d9acc 100644
  #ifndef PNG_MIPS_MSA_OPT
  #  if defined(__mips_msa) && (__mips_isa_rev >= 5) && \
     defined(PNG_ALIGNED_MEMORY_SUPPORTED)
-@@ -354,8 +368,14 @@
+@@ -386,14 +400,64 @@
  #endif
- 
+
  #ifndef PNG_INTERNAL_FUNCTION
 +// OH ISSUE: png optimize
 +#  ifdef PNG_MULTY_LINE_ENABLE
@@ -1648,12 +1648,11 @@ index fb521cf00..6027d9acc 100644
 -      PNG_LINKAGE_FUNCTION PNG_FUNCTION(type, name, args, PNG_EMPTY attributes)
 +      PNG_LINKAGE_FUNCTION PNG_FUNCTION(type, name, args, PNG_HIDE attributes)
  #endif
- 
+
  #ifndef PNG_INTERNAL_CALLBACK
-@@ -1297,6 +1317,50 @@ PNG_INTERNAL_FUNCTION(void,png_read_filter_row_paeth3_neon,(png_row_infop
-     row_info, png_bytep row, png_const_bytep prev_row),PNG_EMPTY);
- PNG_INTERNAL_FUNCTION(void,png_read_filter_row_paeth4_neon,(png_row_infop
-     row_info, png_bytep row, png_const_bytep prev_row),PNG_EMPTY);
+ #  define PNG_INTERNAL_CALLBACK(type, name, args, attributes)\
+       PNG_LINKAGE_CALLBACK PNG_FUNCTION(type, (PNGCBAPI name), args,\
+          PNG_EMPTY attributes)
 +#ifdef PNG_MULTY_LINE_ENABLE
 +// OH ISSUE: png optimize
 +PNG_INTERNAL_FUNCTION(void, png_read_filter_row_up_x2_neon, (png_row_infop
@@ -1699,8 +1698,8 @@ index fb521cf00..6027d9acc 100644
 +    png_ptr, size_t row_bytes), PNG_EMPTY);
 +#endif
  #endif
- 
- #if PNG_MIPS_MSA_IMPLEMENTATION == 1
+
+ /* If floating or fixed point APIs are disabled they may still be compiled
 diff --git a/pngread.c b/pngread.c
 index 8fa7d9f16..71be1a26c 100644
 --- a/pngread.c
@@ -1716,11 +1715,11 @@ index 8fa7d9f16..71be1a26c 100644
           png_ptr->IDAT_read_size = PNG_IDAT_READ_SIZE;
 +#endif
  #     endif
- 
+
  #     ifdef PNG_BENIGN_READ_ERRORS_SUPPORTED
 @@ -684,6 +689,224 @@ png_read_rows(png_structrp png_ptr, png_bytepp row,
  #endif /* SEQUENTIAL_READ */
- 
+
  #ifdef PNG_SEQUENTIAL_READ_SUPPORTED
 +
 +#ifdef PNG_MULTY_LINE_ENABLE
@@ -1944,9 +1943,9 @@ index 8fa7d9f16..71be1a26c 100644
   * chunk, and you have called png_handle_alpha()[*], you will need to
   * initialize the image to the current image that PNG will be overlaying.
 @@ -745,13 +968,45 @@ png_read_image(png_structrp png_ptr, png_bytepp image)
- 
+
     image_height=png_ptr->height;
- 
+
 -   for (j = 0; j < pass; j++)
 -   {
 +#ifdef PNG_MULTY_LINE_ENABLE
@@ -2013,7 +2012,7 @@ index 9ac8ec11f..8afdf4fa5 100644
           png_init_filter_functions(pp);
 @@ -4606,7 +4611,24 @@ defined(PNG_USER_TRANSFORM_PTR_SUPPORTED)
               row_bytes + 48);
- 
+
        else
 +      {
 +#ifdef PNG_MULTY_LINE_ENABLE
@@ -2033,17 +2032,17 @@ index 9ac8ec11f..8afdf4fa5 100644
           png_ptr->big_row_buf = (png_bytep)png_malloc(png_ptr, row_bytes + 48);
 +#endif
 +      }
- 
+
        png_ptr->big_prev_row = (png_bytep)png_malloc(png_ptr, row_bytes + 48);
- 
+
 diff --git a/pngstruct.h b/pngstruct.h
 index e591d94d5..7c3846475 100644
 --- a/pngstruct.h
 +++ b/pngstruct.h
-@@ -140,6 +140,14 @@ typedef const png_colorspace * PNG_RESTRICT png_const_colorspacerp;
- #define PNG_COLORSPACE_CANCEL(flags)        (0xffff ^ (flags))
- #endif /* COLORSPACE || GAMMA */
- 
+@@ -119,6 +119,14 @@ typedef enum
+    ((void)((png_ptr)->chunks |= png_chunk_flag_from_index(i)))
+    /* Record the chunk in the png_struct */
+
 +#ifdef PNG_MULTY_LINE_ENABLE
 +// OH ISSUE: png optimize
 +#define PNG_FILTER_VALUE_UP_X2      (6) // PNG_FILTER_VALUE_UP + 4
@@ -2055,9 +2054,9 @@ index e591d94d5..7c3846475 100644
  struct png_struct_def
  {
  #ifdef PNG_SETJMP_SUPPORTED
-@@ -467,8 +475,14 @@ struct png_struct_def
+@@ -458,7 +466,13 @@ struct png_struct_def
     png_bytep big_prev_row;
- 
+
  /* New member added in libpng-1.5.7 */
 +#ifdef PNG_MULTY_LINE_ENABLE
 +   // OH ISSUE: png optimize
@@ -2067,17 +2066,16 @@ index e591d94d5..7c3846475 100644
     void (*read_filter[PNG_FILTER_VALUE_LAST-1])(png_row_infop row_info,
        png_bytep row, png_const_bytep prev_row);
 +#endif
- 
- #ifdef PNG_READ_SUPPORTED
- #if defined(PNG_COLORSPACE_SUPPORTED) || defined(PNG_GAMMA_SUPPORTED)
+ };
+ #endif /* PNGSTRUCT_H */
 diff --git a/pngtrans.c b/pngtrans.c
 index 1100f46eb..99736747a 100644
 --- a/pngtrans.c
 +++ b/pngtrans.c
 @@ -13,6 +13,19 @@
- 
+
  #include "pngpriv.h"
- 
+
 +#ifdef PNG_MULTY_LINE_ENABLE
 +#  if defined(_MSC_VER) && !defined(__clang__) && defined(_M_ARM64)
 +#    include <arm64_neon.h>
@@ -2092,7 +2090,7 @@ index 1100f46eb..99736747a 100644
 +#endif
 +
  #if defined(PNG_READ_SUPPORTED) || defined(PNG_WRITE_SUPPORTED)
- 
+
  #if defined(PNG_READ_BGR_SUPPORTED) || defined(PNG_WRITE_BGR_SUPPORTED)
 @@ -269,13 +282,19 @@ png_do_invert(png_row_infop row_info, png_bytep row)
     if (row_info->color_type == PNG_COLOR_TYPE_GRAY)
@@ -2118,7 +2116,7 @@ index 1100f46eb..99736747a 100644
 -         rp++;
        }
     }
- 
+
 @@ -283,13 +302,19 @@ png_do_invert(png_row_infop row_info, png_bytep row)
        row_info->bit_depth == 8)
     {
@@ -2143,7 +2141,7 @@ index 1100f46eb..99736747a 100644
 -         rp += 2;
        }
     }
- 
+
 @@ -298,14 +323,21 @@ png_do_invert(png_row_infop row_info, png_bytep row)
        row_info->bit_depth == 16)
     {
@@ -2196,7 +2194,7 @@ index 1100f46eb..99736747a 100644
  #ifdef PNG_BUILTIN_BSWAP16_SUPPORTED
           /* Feature added to libpng-1.6.11 for testing purposes, not
 @@ -622,15 +663,24 @@ png_do_bgr(png_row_infop row_info, png_bytep row)
- 
+
     if ((row_info->color_type & PNG_COLOR_MASK_COLOR) != 0)
     {
 -      png_uint_32 row_width = row_info->width;
@@ -2226,7 +2224,7 @@ index 1100f46eb..99736747a 100644
                 png_byte save = *rp;
                 *rp = *(rp + 2);
 @@ -640,10 +690,20 @@ png_do_bgr(png_row_infop row_info, png_bytep row)
- 
+
           else if (row_info->color_type == PNG_COLOR_TYPE_RGB_ALPHA)
           {
 -            png_bytep rp;
@@ -2276,7 +2274,7 @@ index 1100f46eb..99736747a 100644
                 png_byte save = *rp;
                 *rp = *(rp + 4);
 @@ -673,10 +743,20 @@ png_do_bgr(png_row_infop row_info, png_bytep row)
- 
+
           else if (row_info->color_type == PNG_COLOR_TYPE_RGB_ALPHA)
           {
 -            png_bytep rp;
@@ -2304,9 +2302,9 @@ diff --git a/pngwutil.c b/pngwutil.c
 index 16345e4c0..212c090b6 100644
 --- a/pngwutil.c
 +++ b/pngwutil.c
-@@ -16,6 +16,20 @@
- #ifdef PNG_WRITE_SUPPORTED
- 
+@@ -33,6 +33,20 @@ static const png_byte png_pass_yinc[7] = {8, 8, 8, 4, 4, 2, 2};
+ #endif
+
  #ifdef PNG_WRITE_INT_FUNCTIONS_SUPPORTED
 +#ifdef PNG_WRITE_NEON_ENABLE
 +// OH ISSUE: png optimize
@@ -2325,9 +2323,9 @@ index 16345e4c0..212c090b6 100644
  /* Place a 32-bit number into a buffer in PNG byte order.  We work
   * with unsigned numbers for convenience, although one supported
   * ancillary chunk uses signed (two's complement) numbers.
-@@ -2275,10 +2289,939 @@ png_write_filtered_row(png_structrp png_ptr, png_bytep filtered_row,
+@@ -2319,10 +2333,939 @@ png_write_filtered_row(png_structrp png_ptr, png_bytep filtered_row,
      size_t row_bytes);
- 
+
  #ifdef PNG_WRITE_FILTER_SUPPORTED
 +#ifdef PNG_WRITE_NEON_ENABLE
 +size_t png_write_filter_sub3_neon(png_structrp png_ptr,
@@ -3265,7 +3263,7 @@ index 16345e4c0..212c090b6 100644
     png_bytep rp, dp, lp;
     size_t i;
     size_t sum = 0;
-@@ -2318,6 +3261,16 @@ static void /* PRIVATE */
+@@ -2362,6 +3305,16 @@ static void /* PRIVATE */
  png_setup_sub_row_only(png_structrp png_ptr, png_uint_32 bpp,
      size_t row_bytes)
  {
@@ -3281,8 +3279,8 @@ index 16345e4c0..212c090b6 100644
 +#endif
     png_bytep rp, dp, lp;
     size_t i;
- 
-@@ -2339,6 +3292,9 @@ png_setup_sub_row_only(png_structrp png_ptr, png_uint_32 bpp,
+
+@@ -2383,6 +3336,9 @@ png_setup_sub_row_only(png_structrp png_ptr, png_uint_32 bpp,
  static size_t /* PRIVATE */
  png_setup_up_row(png_structrp png_ptr, size_t row_bytes, size_t lmins)
  {
@@ -3292,7 +3290,7 @@ index 16345e4c0..212c090b6 100644
     png_bytep rp, dp, pp;
     size_t i;
     size_t sum = 0;
-@@ -2366,6 +3322,9 @@ png_setup_up_row(png_structrp png_ptr, size_t row_bytes, size_t lmins)
+@@ -2410,6 +3366,9 @@ png_setup_up_row(png_structrp png_ptr, size_t row_bytes, size_t lmins)
  static void /* PRIVATE */
  png_setup_up_row_only(png_structrp png_ptr, size_t row_bytes)
  {
@@ -3301,8 +3299,8 @@ index 16345e4c0..212c090b6 100644
 +#endif
     png_bytep rp, dp, pp;
     size_t i;
- 
-@@ -2383,6 +3342,16 @@ static size_t /* PRIVATE */
+
+@@ -2427,6 +3386,16 @@ static size_t /* PRIVATE */
  png_setup_avg_row(png_structrp png_ptr, png_uint_32 bpp,
      size_t row_bytes, size_t lmins)
  {
@@ -3319,7 +3317,7 @@ index 16345e4c0..212c090b6 100644
     png_bytep rp, dp, pp, lp;
     png_uint_32 i;
     size_t sum = 0;
-@@ -2423,6 +3392,16 @@ static void /* PRIVATE */
+@@ -2467,6 +3436,16 @@ static void /* PRIVATE */
  png_setup_avg_row_only(png_structrp png_ptr, png_uint_32 bpp,
      size_t row_bytes)
  {
@@ -3335,8 +3333,8 @@ index 16345e4c0..212c090b6 100644
 +#endif
     png_bytep rp, dp, pp, lp;
     png_uint_32 i;
- 
-@@ -2445,6 +3424,16 @@ static size_t /* PRIVATE */
+
+@@ -2489,6 +3468,16 @@ static size_t /* PRIVATE */
  png_setup_paeth_row(png_structrp png_ptr, png_uint_32 bpp,
      size_t row_bytes, size_t lmins)
  {
@@ -3353,7 +3351,7 @@ index 16345e4c0..212c090b6 100644
     png_bytep rp, dp, pp, cp, lp;
     size_t i;
     size_t sum = 0;
-@@ -2506,6 +3495,16 @@ static void /* PRIVATE */
+@@ -2550,6 +3539,16 @@ static void /* PRIVATE */
  png_setup_paeth_row_only(png_structrp png_ptr, png_uint_32 bpp,
      size_t row_bytes)
  {
@@ -3369,8 +3367,8 @@ index 16345e4c0..212c090b6 100644
 +#endif
     png_bytep rp, dp, pp, cp, lp;
     size_t i;
- 
-@@ -2613,6 +3612,25 @@ png_write_find_filter(png_structrp png_ptr, png_row_infop row_info)
+
+@@ -2657,6 +3656,25 @@ png_write_find_filter(png_structrp png_ptr, png_row_infop row_info)
         */
        png_bytep rp;
        size_t sum = 0;
@@ -3395,8 +3393,8 @@ index 16345e4c0..212c090b6 100644
 +#else
        size_t i;
        unsigned int v;
- 
-@@ -2627,7 +3645,7 @@ png_write_find_filter(png_structrp png_ptr, png_row_infop row_info)
+
+@@ -2671,7 +3689,7 @@ png_write_find_filter(png_structrp png_ptr, png_row_infop row_info)
  #endif
           }
        }
@@ -3404,4 +3402,4 @@ index 16345e4c0..212c090b6 100644
 +#endif
        mins = sum;
     }
- 
+
