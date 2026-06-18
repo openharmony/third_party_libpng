@@ -38,22 +38,7 @@ def move_file(src_path, dst_path):
         "backport-libpng-1.6.37-enable-valid.patch",
         "pnglibconf.h",
         "CVE-2018-14048.patch",
-        "libpng_optimize.patch",
-        "CVE-2025-64505.patch",
-        "CVE-2025-64506.patch",
-        "CVE-2025-64720.patch",
-        "CVE-2025-65018.patch",
-        "CVE-2025-66293.patch",
-        "CVE-2025-66293-h1.patch",
-        "CVE-2026-22695.patch",
-        "CVE-2026-22801.patch",
-        "CVE-2025-28162.patch",
-        "CVE-2025-28164.patch",
-        "CVE-2026-25646.patch",
-        "CVE-2026-3713.patch",
-        "CVE-2026-33416.patch",
-        "CVE-2026-33636.patch",
-        "CVE-2026-34757.patch"
+        "libpng_optimize.patch"
     ]
     for file in files:
         src_file = os.path.join(src_path, file)
@@ -79,22 +64,7 @@ def do_patch(target_dir):
         "libpng-multilib.patch",
         "backport-libpng-1.6.37-enable-valid.patch",
         "CVE-2018-14048.patch",
-        "libpng_optimize.patch",
-        "CVE-2025-64505.patch",
-        "CVE-2025-64506.patch",
-        "CVE-2025-64720.patch",
-        "CVE-2025-65018.patch",
-        "CVE-2025-66293.patch",
-        "CVE-2025-66293-h1.patch",
-        "CVE-2026-22695.patch",
-        "CVE-2026-22801.patch",
-        "CVE-2025-28162.patch",
-        "CVE-2025-28164.patch",
-        "CVE-2026-25646.patch",
-        "CVE-2026-3713.patch",
-        "CVE-2026-33416.patch",
-        "CVE-2026-33636.patch",
-        "CVE-2026-34757.patch"
+        "libpng_optimize.patch"
     ]
 
     for patch in patch_file:
@@ -106,8 +76,8 @@ def main():
     libpng_path.add_argument('--gen-dir', help='generate path of log', required=True)
     libpng_path.add_argument('--source-dir', help='generate path of log', required=True)
     args = libpng_path.parse_args()
-    tar_file_path = os.path.join(args.source_dir, "libpng-1.6.44.tar.gz")
-    target_dir = os.path.join(args.gen_dir, "libpng-1.6.44")
+    tar_file_path = os.path.join(args.source_dir, "libpng-1.6.55.tar.gz")
+    target_dir = os.path.join(args.gen_dir, "libpng-1.6.55")
 
     untar_file(tar_file_path, args.gen_dir)
     move_file(args.source_dir, target_dir)
@@ -116,3 +86,5 @@ def main():
 
 if __name__ == '__main__':
     sys.exit(main())
+
+
