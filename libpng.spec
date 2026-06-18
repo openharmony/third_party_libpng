@@ -1,6 +1,6 @@
 Name:           libpng
 Epoch:          2
-Version:        1.6.44
+Version:        1.6.55
 Release:        2
 Summary:        A library of functions for manipulating PNG image format files
 License:        zlib
@@ -89,8 +89,8 @@ make check
 %{_mandir}/man*/*
 
 %changelog
-* Thu May 10 2025 zhouwenpei <guomengyu5@h-partners.com> - 1.6.44-1
-- update 1.6.44
+* Thu May 10 2025 zhouwenpei <guomengyu5@h-partners.com> - 1.6.55-1
+- update 1.6.55
 
 * Thu Dec 15 2022 zhouwenpei <zhouwenpei1@h-partners.com> - 1.6.38-2
 - remove example.c from help
