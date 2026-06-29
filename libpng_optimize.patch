@@ -1650,56 +1650,76 @@ index fb521cf00..6027d9acc 100644
  #endif
 
  #ifndef PNG_INTERNAL_CALLBACK
- #  define PNG_INTERNAL_CALLBACK(type, name, args, attributes)\
-       PNG_LINKAGE_CALLBACK PNG_FUNCTION(type, (PNGCBAPI name), args,\
-          PNG_EMPTY attributes)
+@@ -1547,6 +1547,69 @@ PNG_INTERNAL_FUNCTION(void, png_read_filter_row_paeth3_neon,
+ PNG_INTERNAL_FUNCTION(void, png_read_filter_row_paeth4_neon,
+    (png_row_infop row_info, png_bytep row, png_const_bytep prev_row),
+    PNG_EMPTY);
 +#ifdef PNG_MULTY_LINE_ENABLE
 +// OH ISSUE: png optimize
-+PNG_INTERNAL_FUNCTION(void, png_read_filter_row_up_x2_neon, (png_row_infop
-+    row_info, png_bytep row, png_const_bytep prev_row), PNG_EMPTY);
-+PNG_INTERNAL_FUNCTION(void, png_read_filter_row_avg3_x2_neon, (png_row_infop
-+    row_info, png_bytep row, png_const_bytep prev_row), PNG_EMPTY);
-+PNG_INTERNAL_FUNCTION(void, png_read_filter_row_avg4_x2_neon, (png_row_infop
-+    row_info, png_bytep row, png_const_bytep prev_row), PNG_EMPTY);
-+PNG_INTERNAL_FUNCTION(void, png_read_filter_row_paeth3_x2_neon, (png_row_infop
-+    row_info, png_bytep row, png_const_bytep prev_row), PNG_EMPTY);
-+PNG_INTERNAL_FUNCTION(void, png_read_filter_row_paeth4_x2_neon, (png_row_infop
-+    row_info, png_bytep row, png_const_bytep prev_row), PNG_EMPTY);
++PNG_INTERNAL_FUNCTION(void, png_read_filter_row_up_x2_neon,
++   (png_row_infoprow_info, png_bytep row, png_const_bytep prev_row),
++   PNG_EMPTY);
++PNG_INTERNAL_FUNCTION(void, png_read_filter_row_avg3_x2_neon,
++   (png_row_infoprow_info, png_bytep row, png_const_bytep prev_row),
++   PNG_EMPTY);
++PNG_INTERNAL_FUNCTION(void, png_read_filter_row_avg4_x2_neon,
++   (png_row_infoprow_info, png_bytep row, png_const_bytep prev_row),
++   PNG_EMPTY);
++PNG_INTERNAL_FUNCTION(void, png_read_filter_row_paeth3_x2_neon,
++   (png_row_infoprow_info, png_bytep row, png_const_bytep prev_row),
++   PNG_EMPTY);
++PNG_INTERNAL_FUNCTION(void, png_read_filter_row_paeth4_x2_neon,
++   (png_row_infoprow_info, png_bytep row, png_const_bytep prev_row),
++   PNG_EMPTY);
 +#endif
 +#ifdef PNG_WRITE_NEON_ENABLE
 +// OH ISSUE: png optimize
-+PNG_INTERNAL_FUNCTION(size_t, png_write_filter_sub3_neon, (png_structrp
-+    png_ptr, size_t row_bytes, size_t lmins), PNG_EMPTY);
-+PNG_INTERNAL_FUNCTION(void, png_write_filter_sub3_neon_only, (png_structrp
-+    png_ptr, size_t row_bytes), PNG_EMPTY);
-+PNG_INTERNAL_FUNCTION(size_t, png_write_filter_sub4_neon, (png_structrp
-+    png_ptr, size_t row_bytes, size_t lmins), PNG_EMPTY);
-+PNG_INTERNAL_FUNCTION(void, png_write_filter_sub4_neon_only, (png_structrp
-+    png_ptr, size_t row_bytes), PNG_EMPTY);
-+PNG_INTERNAL_FUNCTION(size_t, png_write_filter_up_neon, (png_structrp
-+    png_ptr, size_t row_bytes, size_t lmins), PNG_EMPTY);
-+PNG_INTERNAL_FUNCTION(void, png_write_filter_up_neon_only, (png_structrp
-+    png_ptr, size_t row_bytes), PNG_EMPTY);
-+PNG_INTERNAL_FUNCTION(size_t, png_write_filter_avg3_neon, (png_structrp
-+    png_ptr, size_t row_bytes, size_t lmins), PNG_EMPTY);
-+PNG_INTERNAL_FUNCTION(void, png_write_filter_avg3_neon_only, (png_structrp
-+    png_ptr, size_t row_bytes), PNG_EMPTY);
-+PNG_INTERNAL_FUNCTION(size_t, png_write_filter_avg4_neon, (png_structrp
-+    png_ptr, size_t row_bytes, size_t lmins), PNG_EMPTY);
-+PNG_INTERNAL_FUNCTION(void, png_write_filter_avg4_neon_only, (png_structrp
-+    png_ptr, size_t row_bytes), PNG_EMPTY);
-+PNG_INTERNAL_FUNCTION(size_t, png_write_filter_paeth3_neon, (png_structrp
-+    png_ptr, size_t row_bytes, size_t lmins), PNG_EMPTY);
-+PNG_INTERNAL_FUNCTION(void, png_write_filter_paeth3_neon_only, (png_structrp
-+    png_ptr, size_t row_bytes), PNG_EMPTY);
-+PNG_INTERNAL_FUNCTION(size_t, png_write_filter_paeth4_neon, (png_structrp
-+    png_ptr, size_t row_bytes, size_t lmins), PNG_EMPTY);
-+PNG_INTERNAL_FUNCTION(void, png_write_filter_paeth4_neon_only, (png_structrp
-+    png_ptr, size_t row_bytes), PNG_EMPTY);
++PNG_INTERNAL_FUNCTION(size_t, png_write_filter_sub3_neon,
++   (png_structrp png_ptr, size_t row_bytes, size_t lmins),
++   PNG_EMPTY);
++PNG_INTERNAL_FUNCTION(void, png_write_filter_sub3_neon_only,
++   (png_structrp png_ptr, size_t row_bytes),
++   PNG_EMPTY);
++PNG_INTERNAL_FUNCTION(size_t, png_write_filter_sub4_neon,
++   (png_structrp png_ptr, size_t row_bytes, size_t lmins),
++   PNG_EMPTY);
++PNG_INTERNAL_FUNCTION(void, png_write_filter_sub4_neon_only,
++   (png_structrp png_ptr, size_t row_bytes),
++   PNG_EMPTY);
++PNG_INTERNAL_FUNCTION(size_t, png_write_filter_up_neon,
++   (png_structrp png_ptr, size_t row_bytes, size_t lmins),
++   PNG_EMPTY);
++PNG_INTERNAL_FUNCTION(void, png_write_filter_up_neon_only,
++   (png_structrp png_ptr, size_t row_bytes),
++   PNG_EMPTY);
++PNG_INTERNAL_FUNCTION(size_t, png_write_filter_avg3_neon,
++   (png_structrp png_ptr, size_t row_bytes, size_t lmins),
++   PNG_EMPTY);
++PNG_INTERNAL_FUNCTION(void, png_write_filter_avg3_neon_only,
++   (png_structrp png_ptr, size_t row_bytes),
++   PNG_EMPTY);
++PNG_INTERNAL_FUNCTION(size_t, png_write_filter_avg4_neon,
++   (png_structrp png_ptr, size_t row_bytes, size_t lmins),
++   PNG_EMPTY);
++PNG_INTERNAL_FUNCTION(void, png_write_filter_avg4_neon_only,
++   (png_structrp png_ptr, size_t row_bytes),
++   PNG_EMPTY);
++PNG_INTERNAL_FUNCTION(size_t, png_write_filter_paeth3_neon,
++   (png_structrp png_ptr, size_t row_bytes, size_t lmins),
++   PNG_EMPTY);
++PNG_INTERNAL_FUNCTION(void, png_write_filter_paeth3_neon_only,
++   (png_structrp png_ptr, size_t row_bytes),
++   PNG_EMPTY);
++PNG_INTERNAL_FUNCTION(size_t, png_write_filter_paeth4_neon,
++   (png_structrp png_ptr, size_t row_bytes, size_t lmins),
++   PNG_EMPTY);
++PNG_INTERNAL_FUNCTION(void, png_write_filter_paeth4_neon_only,
++   (png_structrp png_ptr, size_t row_bytes),
++   PNG_EMPTY);
 +#endif
  #endif
-
- /* If floating or fixed point APIs are disabled they may still be compiled
+ 
+ #if PNG_MIPS_MSA_IMPLEMENTATION == 1
 diff --git a/pngread.c b/pngread.c
 index 8fa7d9f16..71be1a26c 100644
 --- a/pngread.c
