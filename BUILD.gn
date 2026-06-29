@@ -68,7 +68,7 @@ if (defined(ohos_lite)) {
     if (defined(board_toolchain_type) && board_toolchain_type == "iccarm") {
       cflags = [
         "--diag_suppress",
-        "Pa082,Pa084",
+        "Pa082,Pa084,Pe111",
       ]
       cflags_cc = cflags
     }
@@ -121,7 +121,6 @@ if (defined(ohos_lite)) {
     } else {
       external_deps = [ "zlib:libz" ]
     }
-
     public_configs = [ ":libpng_config" ]
     configs = [ ":libpng_wno_config" ]
     innerapi_tags = [
