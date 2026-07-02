@@ -1613,10 +1613,21 @@ diff --git a/pngpriv.h b/pngpriv.h
 index fb521cf00..6027d9acc 100644
 --- a/pngpriv.h
 +++ b/pngpriv.h
-@@ -169,6 +169,19 @@
- #else /* PNG_ARM_NEON_OPT == 0 */
+@@ -30,10 +30,6 @@
+ #  error Duplicate inclusion of pngpriv.h; please check the libpng source files
+ #endif
+ 
+-#if defined(PNG_H) || defined(PNGCONF_H) || defined(PNGLCONF_H)
+-#  error This file must not be included by applications; please include <png.h>
+-#endif
+-
+ /* Feature Test Macros.  The following are defined here to ensure that correctly
+  * implemented libraries reveal the APIs libpng needs to build and hide those
+  * that are not needed and potentially damaging to the compilation.
+@@ -170,6 +166,19 @@
  #     define PNG_ARM_NEON_IMPLEMENTATION 0
  #endif /* PNG_ARM_NEON_OPT > 0 */
+ 
 +#if defined(PNG_ARM_NEON_IMPLEMENTATION) && defined(PNG_ARM_NEON)
 +// OH ISSUE: png optimize
 +#  if PNG_ARM_NEON_IMPLEMENTATION == 1
@@ -1630,10 +1641,10 @@ index fb521cf00..6027d9acc 100644
 +       PNG_RGB_TO_GRAY_ERR | PNG_RGB_TO_GRAY_WARN | PNG_FILLER | PNG_USER_TRANSFORM)
 +#  endif
 +#endif
- 
  #ifndef PNG_MIPS_MSA_OPT
  #  if defined(__mips_msa) && (__mips_isa_rev >= 5) && \
-@@ -386,8 +399,14 @@
+    defined(PNG_ALIGNED_MEMORY_SUPPORTED)
+@@ -386,8 +395,14 @@
  #endif
  
  #ifndef PNG_INTERNAL_FUNCTION
@@ -1649,7 +1660,7 @@ index fb521cf00..6027d9acc 100644
  #endif
  
  #ifndef PNG_INTERNAL_CALLBACK
-@@ -1547,6 +1566,69 @@ PNG_INTERNAL_FUNCTION(void, png_read_filter_row_paeth3_neon,
+@@ -1547,6 +1562,69 @@ PNG_INTERNAL_FUNCTION(void, png_read_filter_row_paeth3_neon,
  PNG_INTERNAL_FUNCTION(void, png_read_filter_row_paeth4_neon,
     (png_row_infop row_info, png_bytep row, png_const_bytep prev_row),
     PNG_EMPTY);
