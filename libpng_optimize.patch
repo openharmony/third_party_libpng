@@ -1667,19 +1667,19 @@ index fb521cf00..6027d9acc 100644
 +#ifdef PNG_MULTY_LINE_ENABLE
 +// OH ISSUE: png optimize
 +PNG_INTERNAL_FUNCTION(void, png_read_filter_row_up_x2_neon,
-+   (png_row_infoprow_info, png_bytep row, png_const_bytep prev_row),
++   (png_row_infop row_info, png_bytep row, png_const_bytep prev_row),
 +   PNG_EMPTY);
 +PNG_INTERNAL_FUNCTION(void, png_read_filter_row_avg3_x2_neon,
-+   (png_row_infoprow_info, png_bytep row, png_const_bytep prev_row),
++   (png_row_infop row_info, png_bytep row, png_const_bytep prev_row),
 +   PNG_EMPTY);
 +PNG_INTERNAL_FUNCTION(void, png_read_filter_row_avg4_x2_neon,
-+   (png_row_infoprow_info, png_bytep row, png_const_bytep prev_row),
++   (png_row_infop row_info, png_bytep row, png_const_bytep prev_row),
 +   PNG_EMPTY);
 +PNG_INTERNAL_FUNCTION(void, png_read_filter_row_paeth3_x2_neon,
-+   (png_row_infoprow_info, png_bytep row, png_const_bytep prev_row),
++   (png_row_infop row_info, png_bytep row, png_const_bytep prev_row),
 +   PNG_EMPTY);
 +PNG_INTERNAL_FUNCTION(void, png_read_filter_row_paeth4_x2_neon,
-+   (png_row_infoprow_info, png_bytep row, png_const_bytep prev_row),
++   (png_row_infop row_info, png_bytep row, png_const_bytep prev_row),
 +   PNG_EMPTY);
 +#endif
 +#ifdef PNG_WRITE_NEON_ENABLE
