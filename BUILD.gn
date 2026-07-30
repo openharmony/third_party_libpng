@@ -136,6 +136,7 @@ if (defined(ohos_lite)) {
     output_name = "libpng"
     install_enable = true
 
+    branch_protector_ret = "pac_ret"
   }
 
   ohos_static_library("libpng_static") {
